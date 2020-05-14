@@ -5,11 +5,11 @@ import React from "react";
 export default ({ data }) => {
   const { frontmatter, body } = data.mdx;
   return (
-    <>
+    <div className="main">
       <h1>{frontmatter.title}</h1>
-      <p>{frontmatter.date}</p>
+      <div className="meta">{frontmatter.date}</div>
       <MDXRenderer>{body}</MDXRenderer>
-    </>
+    </div>
   );
 };
 

@@ -4,6 +4,14 @@ module.exports = {
     description: `Musings, Code, and Animation`
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [`fira sans\:400,700`, `source code pro\:400,400i`, `cardo`],
+        display: "swap"
+      }
+    },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {

@@ -1,0 +1,78 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Cardo, serif;
+  color: #45484d;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.main {
+  padding: 30px 15px;
+}
+
+@media (min-width: 550px) {
+  .main {
+    margin: 0 auto;
+    max-width: 700px;
+    padding: 30px;
+  }
+}
+
+.blog-link {
+  margin: 2rem 0 0;
+  border-top: 1px solid #f4f4f4;
+  padding-top: 2rem;
+}
+
+h1 {
+  font-size: 2.1rem;
+  color: #000000;
+  font-weight: 700;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.meta {
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+  margin-bottom: 1rem;
+  font-family: Fira Sans, sans-serif;
+  line-height: 1rem;
+  color: #8a9199;
+}
+
+p {
+  margin: 0.5rem 0 0;
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #000000;
+  font-weight: 700;
+  font-family: "Fira Sans", sans-serif;
+}
+
+h3 {
+  font-size: 1.4rem;
+  color: #000000;
+  font-weight: 700;
+  font-family: "Fira Sans", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+pre,
+code {
+  font-family: "Source Code Pro", monospace;
+}

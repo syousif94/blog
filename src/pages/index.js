@@ -1,21 +1,18 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { useSiteMetadata } from "../hooks/useSiteMetadata";
+import BlogLink from "../components/BlogLink";
 
 export default ({ data }) => {
   const { title, description } = useSiteMetadata();
   return (
-    <>
+    <div className="main">
       <h1>{title}</h1>
-      <p>{description}</p>
-      {data.allMdx.nodes.map(({ excerpt, frontmatter }) => (
-        <>
-          <h1>{frontmatter.title}</h1>
-          <p>{frontmatter.date}</p>
-          <p>{excerpt}</p>
-        </>
+      <div className="meta">{description}</div>
+      {data.allMdx.nodes.map(props => (
+        <BlogLink {...props} key={props.id} />
       ))}
-    </>
+    </div>
   );
 };
 
