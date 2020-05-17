@@ -2,16 +2,25 @@ import React from "react";
 import { graphql } from "gatsby";
 import { useSiteMetadata } from "../hooks/useSiteMetadata";
 import BlogLink from "../components/BlogLink";
+import { Helmet } from "react-helmet";
 
 export default ({ data }) => {
   const { title, description } = useSiteMetadata();
   return (
     <div className="main">
-      <h1>{title}</h1>
-      <div className="meta">{description}</div>
-      {data.allMdx.nodes.map(props => (
-        <BlogLink {...props} key={props.id} />
-      ))}
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <header>
+        <h2>{title}</h2>
+        <div className="meta">{description}</div>
+      </header>
+
+      <div className="posts">
+        {data.allMdx.nodes.map(props => (
+          <BlogLink {...props} key={props.id} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -24,10 +33,18 @@ export const query = graphql`
     ) {
       nodes {
         id
-        excerpt(pruneLength: 250)
+        excerpt(pruneLength: 130)
         frontmatter {
           title
           date(formatString: "MMMM Do YYYY")
+          tags
+          thumbnail {
+            childImageSharp {
+              fixed(width: 800, height: 520) {
+                ...GatsbyImageSharpFixed
+              }
+            }
+          }
         }
         fields {
           slug

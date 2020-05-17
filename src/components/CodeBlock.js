@@ -18,7 +18,8 @@ export default ({ code, language }) => {
             maxWidth: "100%",
             overflowX: "scroll",
             margin: "1rem 0",
-            padding: "1rem"
+            padding: "0.5rem 0.7rem",
+            fontSize: "0.9rem"
           }}
         >
           {tokens.map((line, i) => (

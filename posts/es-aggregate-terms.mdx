@@ -1,0 +1,106 @@
+---
+title: Popular Terms with ElasticsearchJS
+date: 2020-05-18
+published: true
+tags: elasticsearch, aggregations, javascript, geospatial
+---
+
+It's often useful to show users significant keywords they can filter by. For instance, if you are making something like Twitter, you might to show users the most popular hashtags in the last 3 hours. Or, if you are making a restaurant search engine, you might want to show users the most common cuisines between two coordinates, like the coordinates at the top left and bottom right of a map on screen. [Elasticsearch](https://www.elastic.co) makes these kinds of aggregations easy. I will be demonstrating with [NodeJS](https://nodejs.org/en/).
+
+### Setup Elasticsearch for Node
+
+First, get elasticsearch from npm:
+
+```bash
+npm install @elastic/elasticsearch
+```
+
+Then, create a file somewhere in your source code directory and instantiate an Elasticsearch client:
+
+```js
+// src/elasticsearch.js
+
+const { Client } = require("@elastic/elasticsearch");
+
+const client = new Client({ node: "http://{ELASTICSEARCH_URL}:9200" });
+
+module.exports = client;
+```
+
+### Index Data
+
+There are two primary data types for text in Elasticsearch, `text` and `keyword`. `text` is used for full text searches, like if you want to find paragraphs that contain a certain phrase. `keyword` is meant for short, important data like tags or usernames. To tell Elasticsearch how it should treat our data, we need to create a mapping. Pretend we are storing restaurants with the following mapping:
+
+```js
+// src/index.js
+
+const client = require("./elasticsearch");
+
+async function createMapping() {
+  await client.indices.create(
+    {
+      index: "restaurants",
+      body: {
+        mappings: {
+          properties: {
+            name: { enabled: false },
+            foods: { type: "keyword" },
+            location: { type: "geo_point" }
+          }
+        }
+      }
+    },
+    { ignore: [400] }
+  );
+}
+```
+
+Next we need to insert some restaurants into Elasticsearch:
+
+```js
+// src/index.js
+
+const client = require('./elasticsearch')
+async function createMapping() {...}
+
+async function insertData() {
+  const dataset = [
+    {
+      name: 'Chipotle',
+      foods: ['burrito', 'taco', 'quesadilla', 'salad']
+    },
+    {
+      name: `Torchy's Tacos`,
+      foods: ['taco', 'queso', 'guac']
+    },
+    {
+      name: `Cane's`,
+      foods: ['chicken tenders', 'chicken sandwich']
+    },
+    {
+      name: 'Chick-fil-a',
+      foods: ['chicken sandwich', 'chicken nuggets']
+    }
+  ]
+
+  const body = dataset
+    .flatMap(restaurant => {
+      return [
+        { index: { _index: 'restaurants' } },
+        restaurant
+      ]
+    })
+
+  /** bulk expects body to look like
+   * [
+   *  { index: { _index: 'restaurants' } },
+   *  { name, foods, location },
+   *  { index: { _index: 'restaurants' } },
+   *  { name, foods, location },
+   * ]
+   * flatMap just returns a flattened array for every item in the dataset
+  */
+
+  await client.bulk({ refresh: true, body })
+}
+```

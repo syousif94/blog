@@ -8,7 +8,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: [`fira sans\:400,700`, `source code pro\:400,400i`, `cardo`],
+        fonts: [`fira sans`, `source code pro\:400,400i`],
         display: "swap"
       }
     },
@@ -24,6 +24,15 @@ module.exports = {
         path: `${__dirname}/posts`,
         name: `posts`
       }
-    }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/images`
+      }
+    },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`
   ]
 };
