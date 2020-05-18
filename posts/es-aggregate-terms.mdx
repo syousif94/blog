@@ -5,7 +5,7 @@ published: true
 tags: elasticsearch, aggregations, javascript, geospatial
 ---
 
-It's often useful to show users significant keywords they can filter by. For instance, if you are making something like Twitter, you might to show users the most popular hashtags in the last 3 hours. Or, if you are making a restaurant search engine, you might want to show users the most common cuisines between two coordinates, like the coordinates at the top left and bottom right of a map on screen. [Elasticsearch](https://www.elastic.co) makes these kinds of aggregations easy. I will be demonstrating with [NodeJS](https://nodejs.org/en/).
+It's often useful to show users keywords they can filter by, like the most popular hashtags in the last few hours or the most common types of restaurants between two coordinates on a map. [Elasticsearch](https://www.elastic.co) makes these kinds of aggregations easy. I will be demonstrating with [NodeJS](https://nodejs.org/en/).
 
 ### Setup Elasticsearch for Node
 
@@ -45,7 +45,7 @@ async function createMapping() {
           properties: {
             name: { enabled: false },
             foods: { type: "keyword" },
-            location: { type: "geo_point" }
+            lngLat: { type: "geo_point" }
           }
         }
       }

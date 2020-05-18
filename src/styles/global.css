@@ -34,6 +34,10 @@ body {
   color: #000;
 }
 
+.home-link:hover {
+  color: blue;
+}
+
 .blog-link {
   padding: 1rem 20px;
 }
@@ -73,8 +77,8 @@ h6 {
   line-height: 1.3;
 }
 
-.blog-link:hover h1 {
-  opacity: 0.7;
+.blog-link:hover h3 {
+  color: blue;
 }
 
 .meta {
@@ -90,6 +94,15 @@ p {
   line-height: 1.7rem;
 }
 
+article h1 + p,
+article h2 + p,
+article h3 + p,
+article h4 + p,
+article h5 + p,
+article h6 + p {
+  margin: 0.5rem 0 0;
+}
+
 article {
   padding: 0 32px;
 }
@@ -100,7 +113,16 @@ article h3,
 article h4,
 article h5,
 article h6 {
-  margin: 1rem 0 0;
+  margin: 2rem 0 0;
+}
+
+article pre + h1,
+article pre + h2,
+article pre + h3,
+article pre + h4,
+article pre + h5,
+article pre + h6 {
+  margin: 2.6rem 0 0;
 }
 
 a {
@@ -123,4 +145,11 @@ code {
 
 pre {
   line-height: 1.1rem;
+}
+
+p > code {
+  background-color: #edf1f5;
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: 1rem;
 }
