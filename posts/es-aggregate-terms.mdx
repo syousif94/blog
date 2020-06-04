@@ -22,7 +22,7 @@ Then, create a file somewhere in your source code directory and instantiate an E
 
 const { Client } = require("@elastic/elasticsearch");
 
-const client = new Client({ node: "http://{ELASTICSEARCH_URL}:9200" });
+const client = new Client({ node: ELASTICSEARCH_URL });
 
 module.exports = client;
 ```
@@ -45,10 +45,10 @@ async function createMapping() {
           properties: {
             name: { enabled: false },
             foods: { type: "keyword" },
-            lngLat: { type: "geo_point" }
-          }
-        }
-      }
+            lngLat: { type: "geo_point" },
+          },
+        },
+      },
     },
     { ignore: [400] }
   );
@@ -67,21 +67,35 @@ async function insertData() {
   const dataset = [
     {
       name: 'Chipotle',
-      foods: ['burrito', 'taco', 'quesadilla', 'salad']
+      foods: ['burrito', 'taco', 'quesadilla', 'salad'],
+      lngLat: [-95.464348, 30.163891]
     },
     {
       name: `Torchy's Tacos`,
-      foods: ['taco', 'queso', 'guac']
+      foods: ['taco', 'queso', 'guac'],
+      lngLat: [-95.490100, 30.184230]
     },
     {
       name: `Cane's`,
-      foods: ['chicken tenders', 'chicken sandwich']
+      foods: ['chicken tenders', 'chicken sandwich'],
+      lngLat: [-95.458260, 30.176620]
     },
     {
       name: 'Chick-fil-a',
-      foods: ['chicken sandwich', 'chicken nuggets']
+      foods: ['chicken sandwich', 'chicken nuggets'],
+      lngLat: [-95.460130, 30.167060]
     }
   ]
+
+  /** client.bulk expects body to look like
+   * [
+   *  { index: { _index: 'restaurants' } },
+   *  { name, foods, location },
+   *  { index: { _index: 'restaurants' } },
+   *  { name, foods, location },
+   * ]
+   * flatMap turns [[a, b], [c, d]] into [a,b,c,d]
+  */
 
   const body = dataset
     .flatMap(restaurant => {
@@ -90,16 +104,6 @@ async function insertData() {
         restaurant
       ]
     })
-
-  /** bulk expects body to look like
-   * [
-   *  { index: { _index: 'restaurants' } },
-   *  { name, foods, location },
-   *  { index: { _index: 'restaurants' } },
-   *  { name, foods, location },
-   * ]
-   * flatMap just returns a flattened array for every item in the dataset
-  */
 
   await client.bulk({ refresh: true, body })
 }
